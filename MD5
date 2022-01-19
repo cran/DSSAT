@@ -1,6 +1,6 @@
-d324a9c153fc49a70c91d251a8d450e7 *DESCRIPTION
+f174bfdd81310b85a7f59d80297f82ba *DESCRIPTION
 2a5a88c729a3a6c21077aa0caa428a71 *NAMESPACE
-298451cbb7953802c9e95f6a8045d1bc *NEWS.md
+fb2c8a6ff89954bd88df3975d8447b61 *NEWS.md
 91b21e98b18567c44806f1c9e5dc62f7 *R/DSSAT_tbl_df_class.R
 093d4db92f9c9166338fdb4695e038e8 *R/add_col_widths.R
 ca56d037932b419002066523a73104ae *R/add_v_fmt.R
@@ -10,7 +10,7 @@ f8331ce2d90829e26a4d2b7f9d7adfe9 *R/collapse_rows.R
 6a875dc12978910f17f92d5f9f49b968 *R/combine_multi_section.R
 94354b454e2bb827942428e4e30131f8 *R/combine_simulation_controls.R
 375e18bde18d93e63840b131125903d8 *R/combine_tiers.R
-cde943be441c681470140ea3fb8dd4a9 *R/construct_variable_format.R
+a4478cb7f22cabdc9ab5ceb881839ef5 *R/construct_variable_format.R
 83af7e64ca09d3d0bfaae6d7452bb49a *R/convert_to_date.R
 41bfe5ec095bdb92a651c3d33ce482a8 *R/de_regex.R
 686c022e18a824dbbda8e877701eec31 *R/dssat_na_strings.R
