@@ -1,3 +1,15 @@
+# DSSAT 0.0.7
+
+- Bugfix in read_tier_data() that prevents column XLAT from being converted to date-time format
+
+- Implementing arguments for write_wth() that allow overriding/adding to values stored in wth argument
+
+- Bugfix in write_wth() that ensures comments are prefixed with an exclamation mark
+
+- Adding testthat tests for read_filex() and header_to_fwf_position()
+
+- Adding DOI to CITATION
+
 # DSSAT 0.0.6
 
 - Bugfix to maintain compatibility with replace_na() from tidyr package. DSSAT version 0.0.5 did not have patch properly applied.

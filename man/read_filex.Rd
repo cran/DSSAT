@@ -9,7 +9,8 @@ read_filex(
   col_types = NULL,
   col_names = NULL,
   na_strings = NULL,
-  store_v_fmt = FALSE
+  store_v_fmt = FALSE,
+  use_std_fmt = FALSE
 )
 }
 \arguments{
@@ -29,6 +30,10 @@ missing values}
 
 \item{store_v_fmt}{a logical value indicating whether or not to store the
 format for variables being read}
+
+\item{use_std_fmt}{logical value indicating whether to read
+FileX using the standard column formats. If FALSE, column
+formats will be inferred from tier headers}
 }
 \value{
 a tibble containing the data from the raw DSSAT file

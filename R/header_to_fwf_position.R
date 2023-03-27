@@ -1,7 +1,5 @@
 #' Converts header line into a vector of column names
 #'
-#' @export
-#'
 #' @keywords internal
 #'
 #' @param header A length-one character vector of a header line
@@ -22,10 +20,10 @@
 #'
 #' header_line <-
 #'   "@YEAR DOY   DAS   SRAA    ES1D    ES2D    ES3D    ES4D    ES5D    ES6D    ES7D    ES8D"
-#' header_to_fwf_position(header_line)
+#' DSSAT:::header_to_fwf_position(header_line)
 
-header_to_fwf_position <- function(header,left_justified='EXCODE',
-                                   col_types=NULL,col_names=NULL,
+header_to_fwf_position <- function(header, left_justified='EXCODE',
+                                   col_types=NULL, col_names=NULL,
                                    read_only = NULL){
 
   # Replace @ sign and | with space

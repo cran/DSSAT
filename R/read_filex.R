@@ -6,15 +6,18 @@
 #'
 #' @inheritParams read_tier_data
 #'
+#' @param use_std_fmt logical value indicating whether to read
+#'   FileX using the standard column formats. If FALSE, column
+#'   formats will be inferred from tier headers
+#'
 #' @return a tibble containing the data from the raw DSSAT file
 #'
 #' @importFrom readr cols col_character
 #' @importFrom dplyr "%>%"
 #' @importFrom stringr str_subset str_remove str_which str_detect
 #'
-
 read_filex <- function(file_name, col_types=NULL, col_names=NULL, na_strings=NULL,
-                       store_v_fmt = FALSE){
+                       store_v_fmt = FALSE, use_std_fmt = FALSE){
 
   col_types <- cols(` SNAME\\.*`=col_character(),
                     FMOPT=col_character(),
@@ -85,7 +88,16 @@ read_filex <- function(file_name, col_types=NULL, col_names=NULL, na_strings=NUL
                     ` +CO2`=col_character(),
                     ` IRNAME`=col_character(),
                     ` CHT\\.*`=col_character(),
-                    ` WSTA\\.*`=col_character()) %>%
+                    ` WSTA\\.*`=col_character(),
+                    PCR = col_character(),
+                    ` ICNAME` = col_character(),
+                    SANAME = col_character(),
+                    SMKE = col_character(),
+                    SMHB = col_character(),
+                    SMPX = col_character(),
+                    FLHST = col_character(),
+                    `  FLSA` = col_character(),
+                    FLNAME = col_character()) %>%
     {.$cols <- c(.$cols,col_types$cols);.}
 
   left_justified <- c('SITE','PEOPLE','ADDRESS','INSTRUMENTS',
@@ -99,7 +111,7 @@ read_filex <- function(file_name, col_types=NULL, col_names=NULL, na_strings=NUL
                       ' EDAY','ERAD','EMAX','EMIN','ERAIN','ECO2',
                       'EDEW','EWIND','ENVNAME',
                       ' HNAME',' CHT\\.*',
-                      ' RENAME',' +PLNAME','CHNAME')
+                      ' RENAME',' +PLNAME','CHNAME', 'SANAME')
 
   col_names <- col_names %>%
     c(.,
@@ -142,14 +154,26 @@ read_filex <- function(file_name, col_types=NULL, col_names=NULL, na_strings=NUL
   sec_names <- str_remove(raw_lines[sec_begin],'^\\*')
 
   # Extract all tiers
-  all_secs <- map(1:length(sec_begin),
-                   ~read_tier_data(raw_lines[sec_begin[.]:sec_end[.]],
-                                   left_justified = left_justified,
-                                   col_names = col_names,
-                                   col_types = col_types,
-                                   na_strings = na_strings,
-                                   join_tiers = FALSE,
-                                   store_v_fmt = store_v_fmt))
+  if(use_std_fmt){
+    all_secs <- map(1:length(sec_begin),
+                    ~read_tier_data(raw_lines[sec_begin[.]:sec_end[.]],
+                                    left_justified = left_justified,
+                                    col_names = col_names,
+                                    col_types = col_types,
+                                    na_strings = na_strings,
+                                    join_tiers = FALSE,
+                                    store_v_fmt = store_v_fmt,
+                                    tier_fmt = v_fmt_filex(sec_names[.])))
+  }else{
+    all_secs <- map(1:length(sec_begin),
+                    ~read_tier_data(raw_lines[sec_begin[.]:sec_end[.]],
+                                    left_justified = left_justified,
+                                    col_names = col_names,
+                                    col_types = col_types,
+                                    na_strings = na_strings,
+                                    join_tiers = FALSE,
+                                    store_v_fmt = store_v_fmt))
+  }
 
   names(all_secs) <- sec_names
 
