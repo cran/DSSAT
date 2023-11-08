@@ -1,3 +1,15 @@
+# DSSAT 0.0.8
+
+- read_output() now handles comma separated value (csv) output from DSSAT-CSM
+
+- Adding function clear_output() to clear \*.OUT, \*.LST, \*.INP and \*.INH files
+
+- Bugfix to properly prefix comments with "!" when writing files
+
+- Overhaul of read_sol() that greatly speeds up reading of large SOL files
+
+- New function for creating FileX template: filex_template()
+
 # DSSAT 0.0.7
 
 - Bugfix in read_tier_data() that prevents column XLAT from being converted to date-time format

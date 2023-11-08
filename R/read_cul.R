@@ -4,6 +4,8 @@
 #'
 #' @inheritParams read_dssat
 #'
+#' @inheritParams read_filex
+#'
 #' @return a tibble containing the data from the raw DSSAT output
 #'
 #' @importFrom dplyr "%>%"
@@ -21,8 +23,9 @@
 #'
 #'
 
-read_cul <- function(file_name,col_types=NULL,col_names=NULL,
-                     left_justified=c('VAR#','VARNAME\\.*','VAR-NAME\\.*','VRNAME\\.*')){
+read_cul <- function(file_name, col_types=NULL, col_names=NULL,
+                     left_justified=c('VAR#', 'VARNAME\\.*', 'VAR-NAME\\.*','VRNAME\\.*'),
+                     use_std_fmt = TRUE){
 
   cul_col_types <- cols(`VAR#`=col_character(),
                         `VARNAME\\.*`=col_character(),
@@ -44,13 +47,13 @@ read_cul <- function(file_name,col_types=NULL,col_names=NULL,
   }
 
   if(!is.null(col_types)){
-    col_types$cols <- c(cul_col_types$cols,col_types$cols)
+    col_types$cols <- c(cul_col_types$cols, col_types$cols)
   }else{
     col_types <- cul_col_types
   }
 
   # Read in raw data from file
-  raw_lines <- readLines(file_name)
+  raw_lines <- readLines(file_name, warn = FALSE)
 
   first_line <- raw_lines %>%
     head(1)
@@ -65,11 +68,19 @@ read_cul <- function(file_name,col_types=NULL,col_names=NULL,
     {. - 1} %>%
     c(.,length(raw_lines))
 
+  if(use_std_fmt){
+    tier_fmt <- cul_v_fmt(file_name)
+  }else{
+    tier_fmt <- NULL
+  }
+
   cul <- map(1:length(begin),
              ~read_tier_data(raw_lines[begin[.]:end[.]],
                         col_types = cul_col_types,
                         col_names = col_names,
-                        left_justified = left_justified)) %>%
+                        left_justified = left_justified,
+                        tier_fmt = tier_fmt,
+                        convert_date_cols = FALSE)) %>%
     reduce(combine_tiers)
 
   attr(cul,'first_line') <- first_line

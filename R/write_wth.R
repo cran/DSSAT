@@ -55,24 +55,26 @@ write_wth <- function(wth, file_name, force_std_fmt = TRUE,
     location <- attr(wth, "location")
   }
 
-  location <- location %>%
-    c('*WEATHER: ',.) %>%
-    str_c(collapse='')
+  location <- paste0('*WEATHER: ', location)
 
-  if(is.null(comments)) comments <- attr(wth,'comments')
+  if(is.null(comments)){
+    comments <- fmt_comments(wth)
+  }else{
+    comments <- fmt_comments(comments)
+  }
 
   # Determine if wth was read from old or new file format
   general <- attr(wth,'GENERAL')
 
   if(is.null(general)){
-    general <- tibble(INSI = if(is.null(INSI)) NA_character_ else INSI,
-                      LAT = if(is.null(LAT)) NA_real_ else LAT,
-                      LONG = if(is.null(LONG)) NA_real_ else LONG,
-                      ELEV = if(is.null(ELEV)) NA_real_ else ELEV,
-                      TAV = if(is.null(TAV)) NA_real_ else TAV,
-                      AMP = if(is.null(AMP)) NA_real_ else AMP,
-                      REFHT = if(is.null(REFHT)) NA_real_ else REFHT,
-                      WNDHT = if(is.null(WNDHT)) NA_real_ else WNDHT)
+    general <- data.frame(INSI = if(is.null(INSI)) NA_character_ else INSI,
+                          LAT = if(is.null(LAT)) NA_real_ else LAT,
+                          LONG = if(is.null(LONG)) NA_real_ else LONG,
+                          ELEV = if(is.null(ELEV)) NA_real_ else ELEV,
+                          TAV = if(is.null(TAV)) NA_real_ else TAV,
+                          AMP = if(is.null(AMP)) NA_real_ else AMP,
+                          REFHT = if(is.null(REFHT)) NA_real_ else REFHT,
+                          WNDHT = if(is.null(WNDHT)) NA_real_ else WNDHT)
   }
 
   old_format <- is.data.frame(general)
@@ -80,74 +82,78 @@ write_wth <- function(wth, file_name, force_std_fmt = TRUE,
   if(old_format){
     g_v_fmt <- attr(general,"v_fmt")
   }else{
-    g_v_fmt <- general %>%
-      map(~attr(.,"v_fmt")) %>%
-      do.call(c,.)
+    g_v_fmt <- do.call(
+      c,
+      lapply(general,
+             function(.x){
+               attr(.x,"v_fmt")
+             })
+      )
   }
 
   if(old_format){
     if(force_std_fmt | is.null(g_v_fmt)){
-      g_v_fmt <- c(INSI = "%6s", LAT = "%9.3f", LONG = "%9.3f", ELEV = "%6.0f",
-                   TAV = "%6.1f", AMP = "%6.1f", REFHT = "%6.1f",
-                   WNDHT = "%6.1f", CO2 = "%6f")
+      g_v_fmt <- wth_v_fmt("GENERAL", old_format = old_format)
     }
 
-    # Replace columns in general tibble with non-null function arguments
+    # Replace columns in general data.frame with non-null function arguments
     # the double exclamation "bang-bang" operator (!!) forces assignment
     # using the function argument of the same name
-    if(!is.null(INSI)) general <- mutate(general, INSI = !!INSI)
-    if(!is.null(LAT)) general <- mutate(general, LAT = !!LAT)
-    if(!is.null(LONG)) general <- mutate(general, LONG = !!LONG)
-    if(!is.null(ELEV)) general <- mutate(general, ELEV = !!ELEV)
-    if(!is.null(TAV)) general <- mutate(general, TAV = !!TAV)
-    if(!is.null(AMP)) general <- mutate(general, AMP = !!AMP)
-    if(!is.null(REFHT)) general <- mutate(general, REFHT = !!REFHT)
-    if(!is.null(WNDHT)) general <- mutate(general, WNDHT = !!WNDHT)
-    if(!is.null(CO2)) general <- mutate(general, CO2 = !!CO2)
+    if(!is.null(INSI)) general$INSI <- INSI
+    if(!is.null(LAT)) general$LAT <- LAT
+    if(!is.null(LONG)) general$LONG <- LONG
+    if(!is.null(ELEV)) general$ELEV <- ELEV
+    if(!is.null(TAV)) general$TAV <- TAV
+    if(!is.null(AMP)) general$AMP <- AMP
+    if(!is.null(REFHT)) general$REFHT <- REFHT
+    if(!is.null(WNDHT)) general$WNDHT <- WNDHT
+    if(!is.null(CO2)) general$CO2 <- CO2
 
-    gen_out <- general %>%
-      `attr<-`("v_fmt", g_v_fmt) %>%
-      write_tier(drop_na_rows = FALSE) %>%
-      c(.,'')
+    attr(general, "v_fmt") <- g_v_fmt
+
+    gen_out <-  c(
+      write_tier(general,
+                 drop_na_rows = FALSE),
+      "")
   }else{
     if(force_std_fmt | is.null(g_v_fmt)){
-      g_v_fmt <- c(Latitude = "%9.1f", Longitud = "%9.2f", Elev = "%6.0f",
-                   Zone = "%5f", TAV = "%7f", TAMP = "%6.1f", REFHT = "%6f",
-                   WNDHT = "%6f", SITE = "%-s", WYR = "%4.0f",
-                   WFIRST = "%8.0f", WLAST = "%8.0f", PEOPLE = "%-s",
-                   ADDRESS = "%-s", METHODS = "%-s", INSTRUMENTS = "%-s",
-                   PROBLEMS = "%-s", PUBLICATIONS = "%-s",
-                   DISTRIBUTION = "%-s", NOTES = "%-s")
+      g_v_fmt <- wth_v_fmt("GENERAL", old_format = old_format)
     }
-    gen_out <- general %>%
-      map(~`attr<-`(.,"v_fmt",g_v_fmt)) %>%
-      map(write_tier, drop_na_rows=FALSE) %>%
-      map(~{c(.,'')}) %>%
-      unlist() %>%
-      c('*GENERAL',.,'*DAILY DATA')
+    gen_out <- c(
+      "*GENERAL",
+      unlist(
+        lapply(
+          lapply(general,
+                 function(.x){
+                   attr(.x, "v_fmt") <- g_v_fmt
+                   return(.x)
+                   }),
+          function(.y){
+            c(
+              write_tier(.y, drop_na_rows=FALSE),
+              "")
+            })
+        ),
+      "*DAILY DATA"
+      )
   }
 
   d_v_fmt <- attr(wth,"v_fmt")
 
   if(force_std_fmt | is.null(d_v_fmt)){
-      d_v_fmt <- c(DATE = "%5s", SRAD = "%6.1f", TMAX = "%6.1f",
-                   TMIN = "%6.1f", RAIN = "%6.1f", WIND = "%6.0f",
-                   RHUM = "%6.1f", DEWP = "%6.1f", PAR = "%6.1f",
-                   EVAP = "%6.1f", VAPR = "%6.2f", SUNH = "%6.1f")
-    if(!old_format){
-      d_v_fmt["DATE"] <- "%7s"
-    }
+      d_v_fmt <- wth_v_fmt("DAILY")
   }
 
-  if(!is.null(comments)){
-    comments <- comments %>%
-      str_c("! ", .)
-  }
+  attr(wth, "v_fmt") <- d_v_fmt
 
-  tier_output <- wth %>%
-    `attr<-`("v_fmt", d_v_fmt) %>%
-    write_tier(drop_na_rows = FALSE) %>%
-    c(location,'',comments,'',gen_out,.)
+  tier_output <- c(
+    location,
+    "",
+    comments,
+    "",
+    gen_out,
+    write_tier(wth, drop_na_rows = FALSE)
+    )
 
   write(tier_output, file_name)
 

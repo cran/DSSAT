@@ -8,7 +8,8 @@ read_cul(
   file_name,
   col_types = NULL,
   col_names = NULL,
-  left_justified = c("VAR#", "VARNAME\\\\.*", "VAR-NAME\\\\.*", "VRNAME\\\\.*")
+  left_justified = c("VAR#", "VARNAME\\\\.*", "VAR-NAME\\\\.*", "VRNAME\\\\.*"),
+  use_std_fmt = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,10 @@ names within the header line}
 
 \item{left_justified}{A character vector of column names that
 should be left justified}
+
+\item{use_std_fmt}{logical value indicating whether to read
+FileX using the standard column formats. If FALSE, column
+formats will be inferred from tier headers}
 }
 \value{
 a tibble containing the data from the raw DSSAT output

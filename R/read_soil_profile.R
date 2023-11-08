@@ -35,8 +35,8 @@
 #' read_soil_profile(sample_sol)
 #'
 
-read_soil_profile <- function(raw_lines,left_justified=NULL,
-                              col_types=NULL,col_names=NULL){
+read_soil_profile <- function(raw_lines, left_justified=NULL,
+                              col_types=NULL, col_names=NULL){
 
   left_justified <- left_justified %>%
     c('SITE','COUNTRY',' SCS FAMILY',
@@ -54,6 +54,7 @@ read_soil_profile <- function(raw_lines,left_justified=NULL,
                     SMPX=col_character(),
                     SMKE=col_character(),
                     SLMH=col_character(),
+                    SLBS=col_double(),
                     SLB=col_double()) %>%
     {.$cols <- c(.$cols,col_types$cols);.}
 
@@ -61,15 +62,7 @@ read_soil_profile <- function(raw_lines,left_justified=NULL,
   # Read general information
   gen_info <- raw_lines %>%
     str_subset('^\\*') %>%
-    str_sub(c( 2,14,26,32,38),
-            c(11,24,30,36,87)) %>%
-    str_replace_all(c('^  *'='',
-                      '  *$'='')) %>%
-    as.list() %>%
-    {names(.) <- c("PEDON","SOURCE","TEXTURE","DEPTH","DESCRIPTION")
-    .} %>%
-    as_tibble() %>%
-    mutate(DEPTH=as.numeric(DEPTH))
+    read_sol_gen_info()
 
   attr(gen_info,'v_fmt') <- c('*%-10s','  %-11s',' %-5s','%6.0f',' %-s') %>%
     {names(.) <- colnames(gen_info)
@@ -90,7 +83,8 @@ read_soil_profile <- function(raw_lines,left_justified=NULL,
   tier_data <- map(1:length(tier_begin),
                    ~read_tier_data(raw_lines[tier_begin[.]:tier_end[.]],
                                    left_justified = left_justified,
-                                   col_types = col_types)) %>%
+                                   col_types = col_types,
+                                   col_names = col_names)) %>%
     c(list(gen_info),.) %>%
     reduce(combine_tiers) %>%
     rename_all(toupper) %>%
