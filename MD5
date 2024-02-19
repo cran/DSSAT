@@ -1,6 +1,6 @@
-3d1d51bb1faa788a8b6757192ad91cef *DESCRIPTION
+f3b33e77ded007ba4347344d57eb1bef *DESCRIPTION
 d3a534d1a5d552f30cfe2ab59f7b05ba *NAMESPACE
-cbc0e0dd1f0fe9a3b023447aafc2c489 *NEWS.md
+ea7ad15f477b8d4d224cb96ed9e22dbb *NEWS.md
 91b21e98b18567c44806f1c9e5dc62f7 *R/DSSAT_tbl_df_class.R
 093d4db92f9c9166338fdb4695e038e8 *R/add_col_widths.R
 a6207a11d04939c0bc8ee4d81925c50e *R/add_level_column.R
@@ -38,11 +38,12 @@ cb60682659ee1313a0d60b42a38a4fe3 *R/eco_template.R
 cd9c6fd3c723982db7d5c69dfd2d620a *R/extract_comments.R
 ec67a001f7328a58310afd0e86cafa4a *R/filex_expand_section.R
 476acbcbf3dd3f86937bb4b9a80baae5 *R/filex_sanitize_section.R
-43e7a7b0048494890128a2b62ff2a883 *R/filex_template.R
+99863a19cd398047b27a152113a48a49 *R/filex_template.R
 6432e515fc3df5e6198faa6318a314a1 *R/filex_template_cultivars.R
 e0c90c0ec8ab93d24306920e75e62d8d *R/filex_template_fertilizers.R
 c7de69238c8e533021d59a17c6cb250f *R/filex_template_fields.R
 1b52525f446ed91b5b92cc5e9ea3445f *R/filex_template_general.R
+7a8c5a5708f4fd60756f7ae9fdf29b18 *R/filex_template_harvest_details.R
 3203340d24dd7e8b6f59960fb7ca6cce *R/filex_template_planting_details.R
 d8d73ad83b48337c6936f8284bc387d0 *R/filex_template_simulation_controls.R
 8e2dd73f441f418bd8792443b40d48bc *R/filex_template_treatments.R
@@ -51,7 +52,7 @@ da74ffb777a8939be20bdb19b9445f26 *R/filex_v_fmt.R
 1923835eebc54443495f38f52f051c1d *R/filter_for_all_equal.R
 0379d91a8f156937c3280742f0fce496 *R/find_filex.R
 286b068d3613ec9bfb681047dd772ccf *R/find_filex_tier.R
-d341e3cc7ecb15a5e8e36ebbcb9b7bd3 *R/find_pedon.R
+7e32af9f6838bd940d3fdb27f240251b *R/find_pedon.R
 7b80a90a4fae6934f5be805828156ad7 *R/find_section.R
 81888f8231ae5acc5cec66deca0bca3e *R/find_tier.R
 9aadf37e9bd7af8d82e6734cc92513dd *R/fix_sol_fmt.R
@@ -63,6 +64,7 @@ dac23d62b36a7865a837c07b86940641 *R/header_to_fwf_position.R
 009313f85482893e3c31127d55b3822f *R/invert_collapse_rows.R
 9bba98cd88bcf4963846b24d2cc9428c *R/is_POSIXct.R
 2078c0547666b84caba0798ecf9e6108 *R/is_sol_layer.R
+b34a5aad48593b6225935480f78f138a *R/missing_columns.R
 a9e00041150f6af9bb67ea196ee7f62e *R/mutate_cond.R
 771cb2a31d868340f47bbb0942d596b2 *R/na_to_minus_99.R
 6ed18cb02168521697dd76db589a5434 *R/name_to_regex.R
@@ -80,7 +82,7 @@ aedf9f074f16f95b968c24168d79c22b *R/read_filex.R
 b457967c8ebbbb6ecf2f0c985ffdb199 *R/read_filex_tier_by_header.R
 23162b20e4826b0e48e2221bd233d09f *R/read_fixed_width.R
 e1d4bcde3d86d1be3da6eab61edc5380 *R/read_horizontal_array.R
-4d07bfaa30ad15ce93e9345121b21b02 *R/read_output.R
+ecc94350fe969c69bfc37729c72a19cf *R/read_output.R
 ae83363c1dc97d4145c0331748003847 *R/read_pest.R
 11df2eca4bbf1483e97c0d2efba8ab22 *R/read_soil_profile.R
 ad0aa330e4daf21a94bdc2391b7db3b7 *R/read_sol.R
@@ -100,6 +102,7 @@ c0c1221d50903af777d4cca5a22fbf8c *R/string_count.R
 34537496192fbf1fcabc5bc8716e0a86 *R/v_fmt_to_col_types.R
 6d5c5073f958bd8c92a35909f71a9aab *R/v_fmt_to_fwf_pos.R
 3acf5538b639172c113d138a99a4b2dc *R/v_fmt_to_fwf_widths.R
+3fcacd82d2af28f1de5ded423942caa9 *R/v_fmt_to_type.R
 b1602a4f483fe6a51de18d36bcea5494 *R/v_fmt_to_width.R
 b6e723bfb63209c1dca2c955d9b43993 *R/write_POSIXct.R
 578eb2c0f3463b43b0af2d7df4399d7b *R/write_casupro_eco.R
@@ -110,12 +113,12 @@ fef5733c61d02a2a3890ddd9711653c5 *R/write_cul.R
 ae7cb1dad7281cec2052f9bf6718066e *R/write_eco.R
 7bb166d3a6c72b13ec3dd1e8e4102a75 *R/write_filea.R
 8e86636a08af7f4a4ea9d3347a19f706 *R/write_filet.R
-7abf23e2e76592a53a92728a6abb49d5 *R/write_filex.R
+70903742f0d72f4111b0c4c44cc76a86 *R/write_filex.R
 a8620e73c6008ecfc30900332b24c593 *R/write_sim_ctrl_section.R
 ddc5ac104e9a6e53cb352ebb4ddb2cf9 *R/write_soil_profile.R
 6619e287efc46ed1ec5fadae63800dae *R/write_sol.R
 494d307864cad5307f802e5137ec824c *R/write_tier.R
-b13cbc584c80f25d7b17a3ff3718c37e *R/write_wth.R
+f2748be8e3342d997d7d6dc041ffde55 *R/write_wth.R
 8fea8f5df58c4b43a3c4437ce7922e3c *R/wth_v_fmt.R
 863d2e877994178cb94c0080a3708efb *R/zzz.R
 cd39bead823d677743012935f358681b *README.md
@@ -146,10 +149,10 @@ aa5ca1fd38778ec2876a55f2835ed246 *inst/tinytest/test_read_dssat.R
 c80cb70e824cb94783a6b42fcaf46052 *inst/tinytest/test_read_eco.R
 8e2c44ef8c5ce86c69105ed1df95d8ee *inst/tinytest/test_read_filex.R
 bfff1bda7eac25028e94c74a67d56c15 *inst/tinytest/test_read_filex_std_fmt.R
-5b3094f09076e2622eae05f0d6eb578f *inst/tinytest/test_read_sol.R
+d55fc1dc9b4e43ae398db82eb25177fb *inst/tinytest/test_read_sol.R
 f65e60a62205b829455d798b2c92e586 *inst/tinytest/test_v_fmt_to_fwf_pos.R
 8e40a6af5dc438e521f032cf9dc0b050 *inst/tinytest/test_write_eco.R
-9e136cae4a566d102ce2f103a68dd597 *inst/tinytest/test_write_filex.R
+c2d274af8352f4d25c21e197c5de7689 *inst/tinytest/test_write_filex.R
 e0e7f238e076fef86b011bcb39fa72b9 *inst/tinytest/test_write_wth.R
 9500675af2c1d19a5994ff0e1bb00b59 *man/add_col_widths.Rd
 f461afadd05424785933eefd65eb0f6f *man/add_v_fmt.Rd

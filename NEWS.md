@@ -1,3 +1,15 @@
+# DSSAT 0.0.9
+
+- Fixed spelling of EXPERIMENT column name in read_output()
+
+- Adding new filex_template_harvest_details() function to generate a template HARVEST DETAILS section for File X
+
+- Bugfix for using $ instead of * for start of weather file header line in write_wth()
+
+- Bugfix for read_sol() to handle case when PEDON is less than 10 digits
+
+- Bugfix for write_filex() when missing NOTES, PAREA, PRNO, ...
+
 # DSSAT 0.0.8
 
 - read_output() now handles comma separated value (csv) output from DSSAT-CSM
